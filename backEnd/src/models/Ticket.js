@@ -53,17 +53,21 @@ ticketSchema.index({
   description: 'text'
 });
 
-ticketSchema.pre('save', async function (next) {
-  if (!this.isNew) return next();
+ticketSchema.pre('save', async function () {
+  if (!this.isNew || this.ticketId) return;
 
-  try {
-    const count = await mongoose.model('Ticket').countDocuments();
-    const paddedNumber = String(count + 1).padStart(4, '0');
-    this.ticketId = `TKT-${paddedNumber}`;
-    next();
-  } catch (error) {
-    next(error);
-  }
+  const count = await this.constructor.countDocuments();
+  const paddedNumber = String(count + 1).padStart(4, '0');
+  this.ticketId = `TKT-${paddedNumber}`;
+});
+
+ticketSchema.pre('insertMany', function (next, docs) {
+  docs.forEach((doc, index) => {
+    if (!doc.ticketId) {
+      doc.ticketId = `TKT-${String(index + 1).padStart(4, '0')}`;
+    }
+  });
+  next();
 });
 
 module.exports = mongoose.model('Ticket', ticketSchema);

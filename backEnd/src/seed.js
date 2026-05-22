@@ -4,98 +4,98 @@ const Ticket = require('./models/Ticket');
 
 const sampleTickets = [
   {
-    customerName: 'John Doe',
-    customerEmail: 'john.doe@example.com',
-    subject: 'Login issue',
-    description: 'Unable to login to my account',
+    customerName: 'Rahul Sharma',
+    customerEmail: 'rahul.sharma@gmail.com',
+    subject: 'Unable to login',
+    description: 'I am unable to login even after resetting my password.',
     status: 'Open',
     priority: 'High'
   },
   {
-    customerName: 'Jane Smith',
-    customerEmail: 'jane.smith@example.com',
+    customerName: 'Priya Verma',
+    customerEmail: 'priya.verma@gmail.com',
     subject: 'Payment failed',
-    description: 'Credit card payment was declined',
+    description: 'Amount deducted from my account but order not confirmed.',
     status: 'In Progress',
     priority: 'High'
   },
   {
-    customerName: 'Bob Johnson',
-    customerEmail: 'bob.johnson@example.com',
-    subject: 'Feature request',
-    description: 'Would like to see dark mode added',
+    customerName: 'Aman Gupta',
+    customerEmail: 'aman.gupta@gmail.com',
+    subject: 'Need dark mode',
+    description: 'Please add dark mode support in the dashboard.',
     status: 'Closed',
     priority: 'Low'
   },
   {
-    customerName: 'Alice Williams',
-    customerEmail: 'alice.w@example.com',
-    subject: 'Bug report',
-    description: 'Dashboard not loading on mobile',
+    customerName: 'Sneha Patil',
+    customerEmail: 'sneha.patil@gmail.com',
+    subject: 'Dashboard issue',
+    description: 'Dashboard is not loading properly on mobile devices.',
     status: 'Open',
     priority: 'Medium'
   },
   {
-    customerName: 'Charlie Brown',
-    customerEmail: 'charlie.b@example.com',
-    subject: 'Account deletion request',
-    description: 'Please delete my account and all data',
+    customerName: 'Arjun Mehta',
+    customerEmail: 'arjun.mehta@gmail.com',
+    subject: 'Delete my account',
+    description: 'Please permanently delete my account and personal data.',
     status: 'In Progress',
     priority: 'Medium'
   },
   {
-    customerName: 'Diana Prince',
-    customerEmail: 'diana.prince@example.com',
-    subject: 'Billing question',
-    description: 'Why was I charged twice this month?',
+    customerName: 'Neha Kapoor',
+    customerEmail: 'neha.kapoor@gmail.com',
+    subject: 'Double payment charged',
+    description: 'I was charged twice for the same subscription.',
     status: 'Closed',
     priority: 'High'
   },
   {
-    customerName: 'Edward Norton',
-    customerEmail: 'ed.norton@example.com',
-    subject: 'Integration not working',
-    description: 'Slack integration keeps disconnecting',
+    customerName: 'Rohit Yadav',
+    customerEmail: 'rohit.yadav@gmail.com',
+    subject: 'Slack integration issue',
+    description: 'Slack integration disconnects automatically after some time.',
     status: 'Open',
     priority: 'Medium'
   },
   {
-    customerName: 'Fiona Green',
-    customerEmail: 'fiona.green@example.com',
-    subject: 'Reset password',
-    description: 'Need help resetting my password',
+    customerName: 'Pooja Singh',
+    customerEmail: 'pooja.singh@gmail.com',
+    subject: 'Password reset help',
+    description: 'I forgot my password and cannot access my account.',
     status: 'Closed',
     priority: 'Low'
   },
   {
-    customerName: 'George Martin',
-    customerEmail: 'george.m@example.com',
-    subject: 'Export data',
-    description: 'How do I export my data as CSV?',
+    customerName: 'Vikas Mishra',
+    customerEmail: 'vikas.mishra@gmail.com',
+    subject: 'Export reports',
+    description: 'Need help exporting reports in CSV format.',
     status: 'In Progress',
     priority: 'Low'
   },
   {
-    customerName: 'Hannah Lee',
-    customerEmail: 'hannah.lee@example.com',
-    subject: 'Performance issue',
-    description: 'App is running very slow',
+    customerName: 'Karan Joshi',
+    customerEmail: 'karan.joshi@gmail.com',
+    subject: 'Application is slow',
+    description: 'The application becomes very slow during peak hours.',
     status: 'Open',
     priority: 'High'
   },
   {
-    customerName: 'Ian Cooper',
-    customerEmail: 'ian.cooper@example.com',
+    customerName: 'Anjali Nair',
+    customerEmail: 'anjali.nair@gmail.com',
     subject: 'API documentation',
-    description: 'Where can I find the API docs?',
+    description: 'Can you share the latest API documentation?',
     status: 'Closed',
     priority: 'Low'
   },
   {
-    customerName: 'Julia Roberts',
-    customerEmail: 'julia.r@example.com',
-    subject: 'Upgrade plan',
-    description: 'Want to upgrade to enterprise plan',
+    customerName: 'Siddharth Jain',
+    customerEmail: 'siddharth.jain@gmail.com',
+    subject: 'Upgrade subscription',
+    description: 'I want to upgrade from basic to enterprise plan.',
     status: 'In Progress',
     priority: 'Medium'
   }
@@ -107,8 +107,13 @@ const seedDB = async () => {
     await Ticket.deleteMany({});
     console.log('Cleared existing tickets');
 
-    await Ticket.insertMany(sampleTickets);
-    console.log('Successfully seeded 12 tickets');
+    const ticketsWithIds = sampleTickets.map((ticket, index) => ({
+      ...ticket,
+      ticketId: `TKT-${String(index + 1).padStart(4, '0')}`
+    }));
+
+    await Ticket.insertMany(ticketsWithIds);
+    console.log(`Successfully seeded ${ticketsWithIds.length} tickets`);
     process.exit(0);
   } catch (error) {
     console.error('Seed error:', error);

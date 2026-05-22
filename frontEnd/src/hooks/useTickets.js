@@ -14,12 +14,16 @@ export const useTickets = () => {
     setError(null)
     try {
       const response = await getTickets(params)
-      setTickets(response.data.data)
-      setTotal(response.data.total)
-      setPage(response.data.page)
-      setTotalPages(response.data.totalPages)
+      const body = response.data
+      setTickets(Array.isArray(body?.data) ? body.data : [])
+      setTotal(body?.total ?? 0)
+      setPage(body?.page ?? 1)
+      setTotalPages(body?.totalPages ?? 0)
     } catch (err) {
       setError(err.message)
+      setTickets([])
+      setTotal(0)
+      setTotalPages(0)
     } finally {
       setLoading(false)
     }

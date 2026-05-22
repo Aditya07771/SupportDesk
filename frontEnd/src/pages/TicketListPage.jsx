@@ -76,7 +76,7 @@ const TicketListPage = () => {
 
       {loading ? (
         <LoadingSpinner />
-      ) : tickets.length === 0 ? (
+      ) : !tickets?.length ? (
         <EmptyState
           title="No tickets found"
           message="Try adjusting your search or filter criteria"
