@@ -53,12 +53,14 @@ ticketSchema.index({
   description: 'text'
 });
 
-ticketSchema.pre('save', async function () {
-  if (!this.isNew || this.ticketId) return;
+ticketSchema.statics.generateTicketId = async function () {
+  const count = await this.countDocuments();
+  return `TKT-${String(count + 1).padStart(4, '0')}`;
+};
 
-  const count = await this.constructor.countDocuments();
-  const paddedNumber = String(count + 1).padStart(4, '0');
-  this.ticketId = `TKT-${paddedNumber}`;
+ticketSchema.pre('validate', async function () {
+  if (!this.isNew || this.ticketId) return;
+  this.ticketId = await this.constructor.generateTicketId();
 });
 
 ticketSchema.pre('insertMany', function (next, docs) {

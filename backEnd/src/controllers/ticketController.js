@@ -5,7 +5,10 @@ exports.createTicket = async (req, res, next) => {
   try {
     const { customerName, customerEmail, subject, description, priority } = req.body;
 
+    const ticketId = await Ticket.generateTicketId();
+
     const ticket = await Ticket.create({
+      ticketId,
       customerName,
       customerEmail,
       subject,
