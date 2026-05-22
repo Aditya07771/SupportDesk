@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: supportdesk-api
+    runtime: node
+    rootDir: backEnd
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ORIGIN
+        value: http://localhost:5173,https://support-desk-avhi-4lrg52ik1-adityas-projects-e5e2af34.vercel.app
+      - key: MONGO_URI
+        sync: false

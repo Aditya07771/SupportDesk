@@ -85,6 +85,42 @@ VITE_API_URL=http://localhost:5000
 | Frontend (dev) | `cd frontEnd && npm run dev` | http://localhost:5173 |
 | Frontend (prod) | `cd frontEnd && npm run build && npm run preview` | — |
 
+## Production Deployment
+
+| App | Live URL |
+|-----|----------|
+| Frontend (Vercel) | https://support-desk-avhi-4lrg52ik1-adityas-projects-e5e2af34.vercel.app |
+| Backend (Render) | https://supportdesk-m9ln.onrender.com |
+
+### Render (backend)
+
+1. Set **Root Directory** to `backEnd`
+2. **Build:** `npm install` · **Start:** `npm start`
+3. Environment variables:
+
+| Key | Value |
+|-----|--------|
+| `MONGO_URI` | Your MongoDB Atlas connection string |
+| `NODE_ENV` | `production` |
+| `CORS_ORIGIN` | `http://localhost:5173,https://support-desk-avhi-4lrg52ik1-adityas-projects-e5e2af34.vercel.app` |
+
+4. In MongoDB Atlas → Network Access, allow `0.0.0.0/0` (or Render IPs)
+5. Health check: `GET /api/health`
+
+### Vercel (frontend)
+
+1. Set **Root Directory** to `frontEnd`
+2. Framework: **Vite** (auto-detected)
+3. Environment variable (required if not using committed `.env.production`):
+
+| Key | Value |
+|-----|--------|
+| `VITE_API_URL` | `https://supportdesk-m9ln.onrender.com` |
+
+4. Redeploy after changing env vars (Vite bakes `VITE_*` at build time)
+
+> Any `*.vercel.app` preview URL is allowed by the API CORS config automatically.
+
 ## API Documentation
 
 Base URL: `http://localhost:5000` (or your deployed API).
@@ -146,7 +182,7 @@ All errors: `{ "success": false, "message": "..." }` (`stack` only when `NODE_EN
 | 409 | Duplicate `ticketId` |
 | 500 | Server error |
 
-Common issues: wrong `MONGO_URI`, `VITE_API_URL` unset, CORS origin mismatch.
+Common issues: wrong `MONGO_URI`, `VITE_API_URL` unset at Vercel build time, CORS origin mismatch, Render cold start (wait ~30s on first request).
 
 ## Project Structure
 
